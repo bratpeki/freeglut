@@ -40,7 +40,7 @@
  * XXX: If so, remove the first set of defined()'s below.
  */
 #if !defined(TARGET_HOST_POSIX_X11) && !defined(TARGET_HOST_MS_WINDOWS) && !defined(TARGET_HOST_MAC_OSX) && !defined(TARGET_HOST_SOLARIS) && \
-    !defined(TARGET_HOST_ANDROID) && !defined(TARGET_HOST_BLACKBERRY) && !defined(TARGET_HOST_POSIX_WAYLAND)
+    !defined(TARGET_HOST_ANDROID) && !defined(TARGET_HOST_BLACKBERRY) && !defined(TARGET_HOST_POSIX_WAYLAND) && !defined(TARGET_HOST_MACOS_COCOA)
 #if defined(_MSC_VER) || defined(__WATCOMC__) || defined(__MINGW32__) \
     || defined(_WIN32) || defined(_WIN32_WCE) \
     || ( defined(__CYGWIN__) && defined(X_DISPLAY_MISSING) )
@@ -59,7 +59,7 @@
 #      define  TARGET_HOST_POSIX_X11  1
 #   endif
 
-#elif defined(__APPLE__)
+#elif defined(__APPLE__) && !defined(TARGET_HOST_MACOS_COCOA)
 /* This is a placeholder until we get native OSX support ironed out -- JFF 11/18/09 */
 #   define  TARGET_HOST_POSIX_X11  1
 /* #   define  TARGET_HOST_MAC_OSX    1 */
@@ -108,6 +108,10 @@
 
 #ifndef  TARGET_HOST_OGC
 #   define  TARGET_HOST_OGC            0
+#endif
+
+#ifndef  TARGET_HOST_MACOS_COCOA
+#   define  TARGET_HOST_MACOS_COCOA    0
 #endif
 
 /* -- FIXED CONFIGURATION LIMITS ------------------------------------------- */
@@ -219,6 +223,9 @@
 #endif
 #if TARGET_HOST_OGC
 #include "ogc/fg_internal_ogc.h"
+#endif
+#if TARGET_HOST_MACOS_COCOA
+#include "cocoa/fg_internal_cocoa.h"
 #endif
 
 
@@ -431,8 +438,8 @@ struct tagSFG_Display
 
     int             ScreenWidth;        /* The screen's width in pixels      */
     int             ScreenHeight;       /* The screen's height in pixels     */
-    int             ScreenWidthMM;      /* The screen's width in milimeters  */
-    int             ScreenHeightMM;     /* The screen's height in milimeters */
+    int             ScreenWidthMM;      /* The screen's width in millimeters  */
+    int             ScreenHeightMM;     /* The screen's height in millimeters */
 };
 
 
@@ -566,7 +573,7 @@ struct tagSFG_WindowState   /* as per notes above, sizes always refer to the cli
  * defined in freeglut_ext.h, but if we include that header in this file
  * a bunch of other stuff (font-related) blows up!
  */
-typedef void (*SFG_Proc)();
+typedef void (*SFG_Proc)( void );
 
 
 /*
@@ -1072,7 +1079,7 @@ void        fgOpenWindow( SFG_Window* window, const char* title,
                           GLboolean gameMode, GLboolean isSubWindow );
 void        fgCloseWindow( SFG_Window* window );
 void        fgAddToWindowDestroyList ( SFG_Window* window );
-void        fgCloseWindows ();
+void        fgCloseWindows ( void );
 void        fgDestroyWindow( SFG_Window* window );
 
 /* Menu creation and destruction. Defined in fg_structure.c */
@@ -1142,7 +1149,7 @@ SFG_Menu* fgMenuByID( int menuID );
  * Returns active menu, if any. Assumption: only one menu active throughout application at any one time.
  * This is easier than fgWindowByXXX as all menus are placed in one doubly linked list...
  */
-SFG_Menu* fgGetActiveMenu( );
+SFG_Menu* fgGetActiveMenu( void );
 
 /*
  * The menu activation and deactivation the code. This is the meat

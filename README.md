@@ -7,6 +7,7 @@ freeglut
 ![Windows (MSVC 6.0) build status](https://github.com/freeglut/freeglut/actions/workflows/build_win_msvc6.yml/badge.svg)
 ![Windows (MinGW) build status](https://github.com/freeglut/freeglut/actions/workflows/build_win_mingw.yml/badge.svg)
 ![MacOS X (X11) build status](https://github.com/freeglut/freeglut/actions/workflows/build_macosx_x11.yml/badge.svg)
+![MacOS X (Cocoa) build status](https://github.com/freeglut/freeglut/actions/workflows/build_macosx_cocoa.yml/badge.svg)
 
 OVERVIEW
 --------
@@ -97,5 +98,5 @@ FreeGLUT mailing lists:
   You need to subscribe before posting to any of our mailing lists. Make sure
   to avoid selecting "daily digest mode" if you intend to post, so that you can
   reply properly to specific messages. Also, please do not top-post, and try to
-  send properly formated emails (text, hard-wrapped at 72 columns, no binary or
-  large attachements).
+  send properly formatted emails (text, hard-wrapped at 72 columns, no binary or
+  large attachments).
